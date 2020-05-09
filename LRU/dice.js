@@ -34,57 +34,58 @@
 // - The modifier in each test will be either an integer (positive, negative, or zero) or omitted (with a default assumed value of 0).
 
 
-function diceRange(description){
-    let finalList = [];
+function diceRange(description) {
+    let noOfDices;
+    let noOfFaces;
+    let modifier = 0;
     let descriptionList = description.split("");
-    
-
-    if(descriptionList.length === 2 || descriptionList.length ===3){
-       
-        finalList = simpleDice(descriptionList);
-        return finalList;
+    //console.log(descriptionList);
+    let dIndex = descriptionList.indexOf("d");
+    if(descriptionList[0] == "d"){
+        noOfDices = 1;
     }
-
-    if(descriptionList.includes("+") || description.includes("-")){
-     
-       let temp =  descriptionList.includes("+")? "+" : "-";
-      
-       descriptionList.splice(descriptionList.indexOf(temp), 1);
-    
-       let item = parseInt(descriptionList.pop());
-     
-    
-     
-      
-       
-       finalList = simpleDice(descriptionList);
-      
-       finalList[0] =  temp == "+" ? finalList[0] + item : finalList[0] - item;
-       finalList[1] = temp == "+" ? finalList[1] + item : finalList[1] - item;
+    else{
+    noOfDices = parseInt(descriptionList.slice(0, dIndex).join(""));
     }
-    return finalList;
-}
-
-function simpleDice(descriptionList){
-   
+    
+    if(!descriptionList.includes("+")&&!descriptionList.includes("-")){
+       
+        noOfFaces = parseInt(descriptionList.slice(dIndex+1).join(""));
+    }
+    else{
+        let operatorIndex = descriptionList.includes("+") ? descriptionList.indexOf("+"):descriptionList.indexOf("-");
+       
+        noOfFaces = parseInt(descriptionList.slice(dIndex+1, operatorIndex).join(""));
+        modifier = parseInt(descriptionList.slice(operatorIndex+1).join(""));
+       // console.log(modifier);
+    }
+    // console.log(noOfDices);
+    // console.log(modifier);
     let finalList = [];
-    if(descriptionList.length === 2){
-        finalList.push(1, parseInt(descriptionList[1]));
-        
-        return finalList;
+    if(descriptionList.includes("+")){
+    finalList.push(noOfDices + modifier);
+    finalList.push((noOfDices * noOfFaces)+modifier);
     }
-    else if(descriptionList.length === 3){
-        finalList.push(parseInt(descriptionList[0]), parseInt(descriptionList[0]) * parseInt(descriptionList[2]));
-        return finalList;
+    else{
+        finalList.push(noOfDices - modifier);
+    finalList.push((noOfDices * noOfFaces)-modifier);
     }
+    //  console.log(`no of faces : ${noOfFaces}`);
+    //  console.log(`no of dices : ${noOfDices}`);
+    //  console.log(`no of modifiers : ${modifier}`);
 
+    return finalList;
 }
 
 console.log(diceRange("2d6"));
 console.log(diceRange("d6"));
-console.log(diceRange("1d6+2"));
-console.log(diceRange("d6-2"));
+ console.log(diceRange("1d6+2"));
+ console.log(diceRange("d6-2"));
 console.log(diceRange("2d6"));
 console.log(diceRange("2d6-1"));
 console.log(diceRange("0d6+1"));
-console.log(diceRange("0d6-1"));
+console.log(diceRange("100d6+12"));
+console.log(diceRange("24660d6-21116"));
+console.log(diceRange("2d5"));
+console.log(diceRange("2d98+1"));
+console.log(diceRange("100d1234+3444"));

@@ -1,30 +1,39 @@
-function orderPeople(order, number){
-    let finalList = [];
-    
-    let min_point = order[1];
-    let max_point = min_point + order[1];
-    for(let i = 0; i< order[0]; i++){
-        console.log(order[0]);
-      let tempList = [];
-      if(finalList.length === 0 || finalList.length%2 === 0){
-        for(let j = 0; j< min_point; j++){
-            console.log(min_point);
-          tempList.push(j+1);
-          min_point++;
-          max_point++;
-        }
-        
-      }
-      else{
-        for(let k = max_point; k>min_point; k-- ){
-          tempList.push(k-1);
-          min_point++;
-          max_point++;
-        }
-      }
-      finalList.push(tempList);
-    }
-    return finalList;
+function strongPassword(password) {
+  let numbers = "0123456789";
+  let lower_case = "abcdefghijklmnopqrstuvwxyz";
+  let upper_case = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let special_characters = "!@#$%^&*()-+";
+  let totalToHave = 0;
+  let newArr = password.split('');
+
+  let requiredCharacters = [numbers, lower_case, upper_case, special_characters];
+
+  let boolList = requiredCharacters.map((checkString) =>
+
+    newArr.some(char =>
+      checkString.includes(char)
+    )
+  )
+
+
+
+  totalToHave += boolList.filter(boolItem => boolItem == false).length;
+  console.log(`total have is : ${totalToHave}`);
+
+
+
+  if ((totalToHave + password.length) < 6) {
+    return 6 - password.length;
+  } else {
+    return totalToHave;
   }
-  
-  orderPeople([5, 3], 15);
+}
+
+
+
+console.log(strongPassword("Ed1"));
+console.log(strongPassword("#Edabit"));
+console.log(strongPassword("W1llth!spass?"));
+console.log(strongPassword(""));
+console.log(strongPassword("aaaaaa"));
+console.log(strongPassword("aaaaa"));

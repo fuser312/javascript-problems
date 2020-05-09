@@ -1,51 +1,32 @@
-// Connecting Words
-// Write a function that connects each previous word to the next word by the shared letters. 
-//Return the resulting string (removing duplicate characters in the overlap).
-
-function joinOverlapping(words) {
-    let singleString = words.join("");
-    //console.log(singleString);
-
-    let finalResult = "";
-    for (let i = 0; i < words.length - 1; i++) {
-        //console.log(`print this : ${checkForOverlap(words[i], words[i+1])}`);
-        finalResult += checkForOverlap(words[i], words[i + 1]);
-        console.log(finalResult);
+function joinOverlapping(word) {
+  if (word.length === 0) {
+    return "";
+  }
+  else {
+    let start = '';
+    for (let i = 0; i < word.length - 1; i++) {
+      let this_word = word[i];
+      let next_word = word[i + 1];
+      start = overlapping(this_word, next_word, start);
     }
-    return finalResult;
+    return start + word[word.length - 1];
+  }
 }
 
-function checkForOverlap(firstWord, secondWord) {
-    for (let i = 0; i < firstWord.length; i++) {
-
-        if (firstWord[i] == secondWord[0]) {
-            let firstWordSubString = firstWord.substring(i, firstWord.length);
-
-
-            if (firstWordSubString == secondWord.substring(0, firstWordSubString.length)) {
-                // console.log(firstWordSubString);
-                // console.log(firstWord.substring(0, i));
-                // console.log(secondWord);
-                // console.log(firstWord.substring(0,i) + secondWord);
-                return firstWord.substring(0, i) + secondWord;
-            }
-        }
-
-    }
+function overlapping(this_word, next_word, start) {
+  let j = 0;
+  while (this_word.substr(j) !== next_word.substr(0, this_word.length - j)) {
+    j++;
+  }
+  start += this_word.substr(0, j);
+  return start;
 }
+console.log(joinOverlapping(["helloo", "ooo"]));
+console.log(joinOverlapping(["hello", "oooo"]));
+console.log(joinOverlapping(["move", "over", "movery"]));
+console.log(joinOverlapping(["move", "over", "very"]));
+console.log(joinOverlapping(["oven", "envier", "erase", "serious"]));
+console.log(joinOverlapping(["to", "ops", "psy", "syllable"]));
+console.log(joinOverlapping(["hellolo", "lololol"]))
 
 
-
-
-
-
-
-
-
-
-//joinOverlapping(["oven", "envier", "erase", "serious"]) // "ovenvieraserious"
-joinOverlapping(["move", "over", "very" ]) // "movery"
-// joinOverlapping(["to", "ops", "psy", "syllable"]) // "topsyllable"
-// joinOverlapping(["move", "over", "movery"]) // movery
-// joinOverlapping(["move", "over", "mover"]) // mover
-// joinOverlapping(["move", "over", "move"]) // movermove
